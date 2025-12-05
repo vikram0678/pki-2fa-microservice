@@ -14,7 +14,7 @@ SEED_FILE_PATH = os.getenv("SEED_FILE_PATH", "/data/seed.txt")
 app = FastAPI(title="PKI + TOTP 2FA Microservice")
 
 
-# ---------- Request models ----------
+#Request models
 
 class DecryptRequest(BaseModel):
     encrypted_seed: str
@@ -24,14 +24,14 @@ class VerifyRequest(BaseModel):
     code: str
 
 
-# ---------- Health check (optional, but useful) ----------
+# Health check (optional, but useful)
 
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
 
 
-# ---------- 1) POST /decrypt-seed ----------
+# 1) POST /decrypt-seed 
 
 @app.post("/decrypt-seed")
 def decrypt_seed_endpoint(payload: DecryptRequest):
