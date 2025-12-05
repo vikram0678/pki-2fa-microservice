@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pki-2fa-app
+
+    ports:
+      - "8080:8080"         # Map local 8080 → container 8080
+
+    environment:
+      TZ: UTC               # Required for TOTP + cron
+
+    volumes:
+      - seed-data:/data     # Seed will persist across container restarts
+      - cron-output:/cron   # Cron logs persist
+      - ./student_private.pem:/app/student_private.pem:ro
+      - ./student_public.pem:/app/student_public.pem:ro
+      - ./instructor_public.pem:/app/instructor_public.pem:ro
+
+    restart: unless-stopped # Container restarts automatically if fails
+
+volumes:
+  seed-data:
+  cron-output:
